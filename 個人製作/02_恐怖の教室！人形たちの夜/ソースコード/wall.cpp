@@ -1,0 +1,227 @@
+//===========================
+//
+//ダイレクトX.wallファイル
+//Author:中村　陸
+//
+//===========================
+#include "main.h"
+#include "wall.h"
+#include "input.h"
+
+//マクロ定義
+#define MAX_WALL (4)
+
+//グローバル変数宣言
+LPDIRECT3DTEXTURE9 g_pTextureWall = NULL;							//テクスチャへのポインタ
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffWall = NULL;					//頂点情報を格納
+Wall g_aWall[MAX_WALL];
+
+//===========================
+//プレイヤーの初期化処理
+//===========================
+void InitWall(void)
+{
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		"data\\TEXTURE\\block000.jpg",
+		&g_pTextureWall);
+
+	for (int nCnt = 0; nCnt < MAX_WALL; nCnt++)
+	{
+		if (nCnt == 0)
+		{
+			g_aWall[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, 1800.0f);
+			g_aWall[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		}
+		else if (nCnt == 1)
+		{
+			g_aWall[nCnt].pos = D3DXVECTOR3(1800.0f, 0.0f, 0.0f);
+			g_aWall[nCnt].rot = D3DXVECTOR3(0.0f, 1.57f, 0.0f);
+		}
+		else if (nCnt == 2)
+		{
+			g_aWall[nCnt].pos = D3DXVECTOR3(0.0f, 0.0f, -1800.0f);
+			g_aWall[nCnt].rot = D3DXVECTOR3(0.0f, 3.14f, 0.0f);
+		}
+		else if (nCnt == 3)
+		{
+			g_aWall[nCnt].pos = D3DXVECTOR3(-1800.0f, 0.0f, 0.0f);
+			g_aWall[nCnt].rot = D3DXVECTOR3(0.0f, -1.57f, 0.0f);
+		}
+
+		g_aWall[nCnt].bUse = true;
+	}
+
+	//頂点バッファの生成
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4 * MAX_WALL,
+		D3DUSAGE_WRITEONLY,
+		{ FVF_VERTEX_3D },
+		D3DPOOL_MANAGED,
+		&g_pVtxBuffWall,
+		NULL);
+
+	VERTEX_3D *pVtx;
+
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	g_pVtxBuffWall->Lock(0, 0, (void**)&pVtx, 0);
+
+	for (int nCnt = 0; nCnt < MAX_WALL; nCnt++)
+	{
+		//頂点座標の設定
+		pVtx[0].pos.x = -1800.0f;
+		pVtx[0].pos.y = 600.0f;
+		pVtx[0].pos.z = 0.0f;
+
+		pVtx[1].pos.x = 1800.0f;
+		pVtx[1].pos.y = 600.0f;
+		pVtx[1].pos.z = 0.0f;
+
+		pVtx[2].pos.x = -1800.0f;
+		pVtx[2].pos.y = 0.0f;
+		pVtx[2].pos.z = 0.0f;
+
+		pVtx[3].pos.x = 1800.0f;
+		pVtx[3].pos.y = 0.0f;
+		pVtx[3].pos.z = 0.0f;
+
+		if (nCnt == 0 || nCnt == 1)
+		{
+			//頂点座標の設定
+			pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+			pVtx[1].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+			pVtx[2].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+			pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+		}
+		else if (nCnt == 2 || nCnt == 3)
+		{
+			//頂点座標の設定
+			pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+			pVtx[1].nor = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+			pVtx[2].nor = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+			pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+		}
+
+		//頂点カラーの設定
+		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+		//テクスチャ座標の設定
+		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+		pVtx += 4;
+	}
+
+	//頂点バッファをアンロックする
+	g_pVtxBuffWall->Unlock();
+}
+
+//===========================
+//プレイヤーの終了処理
+//===========================
+void UninitWall(void)
+{
+	//テクスチャの破棄
+	if (g_pTextureWall != NULL)
+	{
+		g_pTextureWall->Release();
+		g_pTextureWall = NULL;
+	}
+
+	//頂点バッファの破棄
+	if (g_pVtxBuffWall != NULL)
+	{
+		g_pVtxBuffWall->Release();
+		g_pVtxBuffWall = NULL;
+	}
+}
+
+//===========================
+//プレイヤーの更新処理
+//===========================
+void UpdateWall(void)
+{
+	for (int nCnt = 0; nCnt < MAX_WALL; nCnt++)
+	{
+		if (g_aWall[nCnt].bUse == true)
+		{
+			if (GetKeyboardPress(DIK_O) == true)
+			{//Wキーが押された時
+				g_aWall[nCnt].rot.y += 0.01f;
+			}
+			if (GetKeyboardPress(DIK_P) == true)
+			{//Wキーが押された時
+				g_aWall[nCnt].rot.y -= 0.01f;
+			}
+		}
+	}
+}
+
+//===========================
+//プレイヤーの描画処理
+//===========================
+void DrawWall(void)
+{
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	D3DXMATRIX mtxRot, mtxTrans;		//計算用マトリックス
+
+	for (int nCnt = 0; nCnt < MAX_WALL; nCnt++)
+	{
+		if (g_aWall[nCnt].bUse == true)
+		{
+			//ワールドマトリックスの初期化
+			D3DXMatrixIdentity(&g_aWall[nCnt].mtxWorld);
+
+			//向きを反映
+			D3DXMatrixRotationYawPitchRoll(&mtxRot,
+				g_aWall[nCnt].rot.y, g_aWall[nCnt].rot.x, g_aWall[nCnt].rot.z);
+			D3DXMatrixMultiply(&g_aWall[nCnt].mtxWorld, &g_aWall[nCnt].mtxWorld, &mtxRot);
+
+			//位置を反映
+			D3DXMatrixTranslation(&mtxTrans,
+				g_aWall[nCnt].pos.x, g_aWall[nCnt].pos.y, g_aWall[nCnt].pos.z);
+			D3DXMatrixMultiply(&g_aWall[nCnt].mtxWorld, &g_aWall[nCnt].mtxWorld, &mtxTrans);
+
+			//ワールドマトリックスの設定
+			pDevice->SetTransform(D3DTS_WORLD, &g_aWall[nCnt].mtxWorld);
+
+			//頂点バッファをデータストリームに設定
+			pDevice->SetStreamSource(0,
+				g_pVtxBuffWall,
+				0,
+				sizeof(VERTEX_3D));
+
+			//頂点フォーマットの設定
+			pDevice->SetFVF(FVF_VERTEX_3D);
+
+			//テクスチャの設定
+			pDevice->SetTexture(0, g_pTextureWall);
+
+			//ポリゴンの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 4 * nCnt, 2);
+		}
+	}
+}
+
+bool CollisionWall(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove)
+{
+	bool bLand = false;
+
+	if ((pPos->x > 1800.0f || pPos->x < -1800.0f ||
+		pPos->z > 1800.0f || pPos->z < -1800.0f||
+		pPos->y < 0.0f) &&
+		pPos->y < 600.0f)
+	{
+		bLand = true;
+	}
+
+	return bLand;
+}

@@ -1,0 +1,138 @@
+NUM_MODEL = 16
+
+MODEL_FILENAME = data/MODEL/Dessan/DessanKosi.x		# [0]腰
+MODEL_FILENAME = data/MODEL/Dessan/DessanKarada.x	# [1]体
+MODEL_FILENAME = data/MODEL/Dessan/DessanKubi.x		# [2]首
+MODEL_FILENAME = data/MODEL/Dessan/DessanHead.x		# [3]頭
+MODEL_FILENAME = data/MODEL/Dessan/DessanRninoude.x	# [4]右二の腕
+MODEL_FILENAME = data/MODEL/Dessan/DessanRude.x		# [5]右腕
+MODEL_FILENAME = data/MODEL/Dessan/DessanRte.x		# [6]右手
+MODEL_FILENAME = data/MODEL/Dessan/DessanLninoude.x	# [7]左二の腕
+MODEL_FILENAME = data/MODEL/Dessan/DessanLude.x		# [8]左腕
+MODEL_FILENAME = data/MODEL/Dessan/DessanLte.x		# [9]左手
+MODEL_FILENAME = data/MODEL/Dessan/DessanLmomo.x	# [10]左もも
+MODEL_FILENAME = data/MODEL/Dessan/DessanLsune.x	# [11]左すね
+MODEL_FILENAME = data/MODEL/Dessan/DessanLasi.x		# [12]左あし
+MODEL_FILENAME = data/MODEL/Dessan/DessanRmomo.x	# [13]右もも
+MODEL_FILENAME = data/MODEL/Dessan/DessanRsune.x	# [14]右すね
+MODEL_FILENAME = data/MODEL/Dessan/DessanRasi.x		# [15]右あし
+
+CHARACTERSET
+	MOVE = 1.6						# 移動量
+	JUMP = 15.00					# ジャンプ量
+	RADIUS = 40.0					# 半径
+	HEIGHT = 45.0					# 高さ
+	NUM_PARTS = 16					# パーツ数
+
+	PARTSSET						# [0]腰
+		INDEX = 0
+		PARENT = -1					# (親)NULL
+		POS = 0.0 27.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET						# [1]体
+		INDEX = 1
+		PARENT = 0					# (親)腰
+		POS = 0.0 4.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET						# [2]首
+		INDEX = 2
+		PARENT = 1					# (親)体
+		POS = 0.0 10.5 -0.5
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET						# [3]頭
+		INDEX = 3
+		PARENT = 2					# (親)首
+		POS = 0.0 0.0 0.5
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET						# [4]右二の腕
+		INDEX = 4
+		PARENT = 1					# (親)体
+		POS = -4.5 7.5 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET						# [5]右腕
+		INDEX = 5
+		PARENT = 4					# (親)右二の腕
+		POS = -9.8 0.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET						# [6]右手
+		INDEX = 6
+		PARENT = 5					# (親)右腕
+		POS = -8.0 0.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET						# [7]左二の腕
+		INDEX = 7
+		PARENT = 1					# (親)体
+		POS = 4.5 7.5 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET						# [8]左腕
+		INDEX = 8
+		PARENT = 7					# (親)左二の腕
+		POS = 9.8 0.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+
+	PARTSSET						# [9]左手
+		INDEX = 9
+		PARENT = 8					# (親)左腕
+		POS = 8.0 0.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET						# [10]右腿
+		INDEX = 10
+		PARENT = 0					# (親)腰
+		POS = 2.0 -4.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET						# [11]右すね
+		INDEX = 11
+		PARENT = 10					# (親)右腿
+		POS = 0.0 -11.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET						# [12]右足
+		INDEX = 12
+		PARENT = 11					# (親)右すね
+		POS = 0.0 -10.0 -0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET						# [13]左腿
+		INDEX = 13
+		PARENT = 0					# (親)腰
+		POS = -2.0 -4.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET						# [14]左すね
+		INDEX = 14
+		PARENT = 13					# (親)左腿
+		POS = 0.0 -11.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET						# [15]左足
+		INDEX = 15
+		PARENT = 14					# (親)左すね
+		POS = 0.0 -10.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+END_CHARACTERSET
